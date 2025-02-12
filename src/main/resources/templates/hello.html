@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>스프링 입문</title>
 </head>
 <body>
-    <p th:text="'안녕하세요. 저는 ' + ${nickname} + '입니다.'"></p>
+    <form action="/post" method="post">
+        <label for="userCode"> 사용자 코드 </label>
+        <input type="text" id="userCode" name="userCode" required>
+        <br>
+        <button type="submit">전송</button>
+    </form>
 </body>
 </html>
