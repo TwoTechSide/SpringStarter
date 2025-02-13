@@ -19,7 +19,7 @@ public class User {
     // @Id : 식별자 필드, @GenerateValue : 기본 키 생성, @Column : 엔티티 필드를 테이블의 칼럼에 매핑
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private int id;
+    private Long id;
 
     private String name;
     private String password;
