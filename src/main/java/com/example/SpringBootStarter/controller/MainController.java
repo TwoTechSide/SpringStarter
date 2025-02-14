@@ -9,11 +9,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class MainController {
 
-    @GetMapping(value = "/hello")
-    public String get() {
-        return "hello.html";
-    }
-
     // @ResponseBody : 자바 객체를 json 기반의 HTTP Body 로 변환
     // @RestController 사용시 @ResponseBody 어노테이션이 자동으로 붙게 됨
     @PostMapping(value = "/post")
