@@ -18,21 +18,23 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    // Entity -> Dto
-    public UserDto dtoToEntity(UserDto userDto) {
-        return UserDto.builder()
+    // Dto -> Entity
+    public User dtoToEntity(UserDto userDto) {
+        return User.builder()
                 .email(userDto.getEmail())
+                .password(userDto.getPassword())
                 .name(userDto.getName())
                 .age(userDto.getAge())
                 .email(userDto.getEmail())
                 .build();
     }
 
-    // Dto -> Entity
-    public User entityToDto(User user) {
-        return User.builder()
+    // Entity -> Dto
+    public UserDto entityToDto(User user) {
+        return UserDto.builder()
                 .id(user.getId())
                 .name(user.getName())
+                .password(user.getPassword())
                 .age(user.getAge())
                 .gender(user.getGender())
                 .email(user.getEmail())
