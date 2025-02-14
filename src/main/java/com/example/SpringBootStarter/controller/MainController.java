@@ -21,4 +21,11 @@ public class MainController {
     public String post(@RequestBody String requestBody) {
         return "POST 요청 성공! : " + requestBody;
     }
+
+    // React.js
+    @GetMapping("/api/hello")
+    @ResponseBody
+    public String test() {
+        return "Hello, world!";
+    }
 }
