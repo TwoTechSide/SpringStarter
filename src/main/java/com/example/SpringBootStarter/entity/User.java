@@ -25,6 +25,8 @@ public class User {
     private String password;
     private int age;
     private String gender;
+
+    @Column(unique = true)
     private String email;
 
     @CreatedDate                                    // @EntityListeners 어노테이션의 AuditingEntityListener.class 으로 구현되는 어노테이션
