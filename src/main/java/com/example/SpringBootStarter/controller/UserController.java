@@ -1,5 +1,6 @@
 package com.example.SpringBootStarter.controller;
 
+import com.example.SpringBootStarter.dto.UserDto;
 import com.example.SpringBootStarter.dto.UserSignUpDto;
 import com.example.SpringBootStarter.entity.User;
 import com.example.SpringBootStarter.repository.UserRepository;
@@ -25,10 +26,13 @@ public class UserController {
 
     @PostMapping("/sign-up")
     @ResponseBody
-    public String signup(@RequestBody UserSignUpDto signUpDto) {
+    public String signup(@RequestBody UserDto userDto) {
         User user = User.builder()
-                .email(signUpDto.getEmail())
-                .password(passwordEncoder.encode(signUpDto.getPassword()))
+                .email(userDto.getEmail())
+                .name(userDto.getName())
+                .password(passwordEncoder.encode(userDto.getPassword()))
+                .age(userDto.getAge())
+                .gender(userDto.getGender())
                 .build();
 
         userService.saveUser(user);
