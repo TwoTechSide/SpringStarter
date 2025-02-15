@@ -1,0 +1,39 @@
+.signup-wrapper {
+    margin: 20px auto 0px;
+    padding: 0px 10px;
+    width: 800px;
+    height: auto;
+    border-radius: 5px;
+    border: 1px solid grey;
+}
+
+.signup-wrapper > h2 {
+    text-align: center;
+}
+
+.signup-wrapper > .inputRow {
+    width: 100%;
+    border-top: 1px solid gainsboro;
+    padding: 15px 10px;
+    margin: 5px;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    text-align: left;
+}
+
+.signup-wrapper > .inputRow > .halfRow {
+    width: 50%;
+}
+
+.signup-wrapper > .inputRow .inputDescription {
+    display: inline-block;
+    padding: 3px 5px;
+    width: 110px;
+}
+
+.signup-wrapper > .inputRow .rightInput, .signup-wrapper > .inputRow .rightSelect {
+    box-sizing: border-box;
+    margin: auto auto auto 10px;
+    padding: 5px;
+}
