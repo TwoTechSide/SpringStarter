@@ -37,3 +37,20 @@
     margin: auto auto auto 10px;
     padding: 5px;
 }
+
+.invalidInput {
+    border: 1px red solid;
+    border-radius: 2px;
+}
+
+.validInput {
+    border: 1px blue solid;
+    border-radius: 2px;
+}
+
+.invalidDescription {
+    position: absolute;
+    font-size: 0.7em;
+    transform: translateX(130px) translateY(2px);
+    color: brown;
+}

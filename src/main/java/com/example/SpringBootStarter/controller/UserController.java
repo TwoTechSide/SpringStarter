@@ -7,17 +7,13 @@ import com.example.SpringBootStarter.repository.UserRepository;
 import com.example.SpringBootStarter.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @AllArgsConstructor
 @RequestMapping("/user")
-@Controller
+@RestController
 public class UserController {
 
     private final UserService userService;
@@ -25,8 +21,12 @@ public class UserController {
     private final UserRepository userRepository;
 
     @PostMapping("/sign-up")
-    @ResponseBody
-    public String signup(@RequestBody UserDto userDto) {
+    public boolean signup(@RequestBody UserDto userDto) {
+
+        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
+            return false;
+        };
+
         User user = User.builder()
                 .email(userDto.getEmail())
                 .name(userDto.getName())
@@ -37,11 +37,10 @@ public class UserController {
 
         userService.saveUser(user);
 
-        return "signup-done";
+        return true;
     }
 
     @PostMapping("/sign-in")
-    @ResponseBody
     public Object signin(@RequestBody UserSignUpDto signUpDto) {
         Optional<User> user = userRepository.findByEmail(signUpDto.getEmail());
 
@@ -51,5 +50,10 @@ public class UserController {
             }
         }
         return "Incorrect email or password, please enter it again.";
+    }
+
+    @GetMapping("/checkEmail")
+    public boolean checkEmail(@RequestParam String email) {
+        return userRepository.findByEmail(email).isEmpty();
     }
 }
