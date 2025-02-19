@@ -52,7 +52,7 @@ const Signup = () => {
         if (userInfo.password != confirmPassword) return alert("비밀번호가 일치하지 않습니다.");
         if (userInfo.gender == "None" || userInfo.gender == "") return alert("성별을 선택해주세요.");
 
-        axios.post('/user/sign-up', JSON.stringify(userInfo), {
+        axios.post('/login/sign-up', JSON.stringify(userInfo), {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -78,7 +78,7 @@ const Signup = () => {
         if (userInfo.email == "")
             return alert("이메일을 입력해주세요.");
 
-        axios.get("/user/checkEmail", {
+        axios.get("/login/checkEmail", {
             params: {
                 email: userInfo.email
             }

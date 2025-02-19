@@ -24,3 +24,14 @@
   color: grey;
   font-size: 13px;
 }
+
+.api-login > .container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 5px;
+  padding: 10px;
+  box-sizing: border-box;
+  border-top: 1px solid gainsboro;
+  border-bottom: 1px solid gainsboro;
+}
