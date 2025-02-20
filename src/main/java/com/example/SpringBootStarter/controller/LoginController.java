@@ -24,15 +24,17 @@ public class LoginController {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
+    // frontend/src/pages/login.js 로 REST API 키와 redirect url 전달
     @GetMapping("/kakao-api-key")
     @ResponseBody
     public String kakaoApiKey(@Value("${kakao.client_id}") String client_id, @Value("${kakao.redirect_uri}") String redirect_uri) {
         return "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+client_id+"&redirect_uri="+redirect_uri;
     }
 
-    @GetMapping("/callback")
-    public ResponseEntity callback(@RequestParam String code) {
-        return new ResponseEntity(HttpStatus.OK);
+    @GetMapping("/oauth2/code/kakao")
+    @ResponseBody
+    public String oauth2KakaoLogin(@RequestParam String code) {
+        return code;
     }
 
     @PostMapping("/sign-up")
