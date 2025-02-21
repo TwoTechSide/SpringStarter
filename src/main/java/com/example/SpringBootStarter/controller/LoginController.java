@@ -1,7 +1,5 @@
 package com.example.SpringBootStarter.controller;
 
-import com.example.SpringBootStarter.api.KakaoApiLoginUtil;
-import com.example.SpringBootStarter.dto.KakaoDto;
 import com.example.SpringBootStarter.dto.UserDto;
 import com.example.SpringBootStarter.dto.UserSignUpDto;
 import com.example.SpringBootStarter.entity.User;
@@ -10,14 +8,13 @@ import com.example.SpringBootStarter.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @Slf4j
 @AllArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/login")
 public class LoginController {
 
@@ -25,24 +22,16 @@ public class LoginController {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-    private final KakaoApiLoginUtil kakaoApiLoginUtil;
-
-    // frontend/src/pages/login.js 로 REST API 키와 redirect url 전달
-    @GetMapping("/kakao-api-key")
-    @ResponseBody
-    public String kakaoApiKey() {
-        return kakaoApiLoginUtil.reqAuthCode();
-    }
-
-    // 카카오 callback
-    @GetMapping("/oauth2/code/kakao")
-    @ResponseBody
-    public KakaoDto.OAuthToken oauth2KakaoLogin(@RequestParam String code) {
-        return kakaoApiLoginUtil.oauth2KakaoLogin(code);
-    }
+//    private final KakaoApiLoginUtil kakaoApiLoginUtil;
+//
+//    // 카카오 callback
+//    @GetMapping("/oauth2/code/kakao")
+//    @ResponseBody
+//    public KakaoDto.OAuthToken oauth2KakaoLogin(@RequestParam String code) {
+//        return kakaoApiLoginUtil.oauth2KakaoLogin(code);
+//    }
 
     @PostMapping("/sign-up")
-    @ResponseBody
     public boolean signup(@RequestBody UserDto userDto) {
 
         if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
@@ -63,7 +52,6 @@ public class LoginController {
     }
 
     @PostMapping("/sign-in")
-    @ResponseBody
     public Object signin(@RequestBody UserSignUpDto signUpDto) {
         Optional<User> user = userRepository.findByEmail(signUpDto.getEmail());
 
@@ -76,7 +64,6 @@ public class LoginController {
     }
 
     @GetMapping("/checkEmail")
-    @ResponseBody
     public boolean checkEmail(@RequestParam String email) {
         return userRepository.findByEmail(email).isEmpty();
     }

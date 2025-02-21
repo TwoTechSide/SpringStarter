@@ -1,22 +1,16 @@
 // WARNING 안내 무시
 /* eslint-disable */
 
-import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import '../styles/login.css';
 import kakaoTalkPic from '../assets/kakao_login_medium_wide.png'
-import axios from 'axios';
+
+const K_CLIENT_ID = process.env.REACT_APP_K_CLIENT_ID;
+const K_REDIRECT_URI = `http://localhost:3000/login/oauth2/kakao`;
+const kakaoURL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${K_CLIENT_ID}&redirect_uri=${K_REDIRECT_URI}`
 
 function Login() {
-
-    let [location, setLocation] = useState("");
-
-    useEffect(() => {
-        axios.get('/login/kakao-api-key')
-        .then((res) => {setLocation(res.data);})
-        .catch((err) => {console.log(err);});
-    }, []);
 
     return (
         <>
@@ -27,7 +21,7 @@ function Login() {
                 <input type='submit' value='login'></input>
                 <div className='api-login'>
                     <div className='container'>
-                        <a href={location}>
+                        <a href={kakaoURL}>
                             <img src={kakaoTalkPic} />
                         </a>
                     </div>

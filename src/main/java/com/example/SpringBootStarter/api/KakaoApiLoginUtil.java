@@ -24,11 +24,6 @@ public class KakaoApiLoginUtil {
     @Value("${kakao.redirect_uri}")
     private String redirectUri;
 
-    // 인가 코드 발급
-    public String reqAuthCode() {
-        return "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+clientId+"&redirect_uri="+redirectUri;
-    }
-
     public KakaoDto.OAuthToken oauth2KakaoLogin(String code) {
 
         ObjectMapper objectMapper = new ObjectMapper();
