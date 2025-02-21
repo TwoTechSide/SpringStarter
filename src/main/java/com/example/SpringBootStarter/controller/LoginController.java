@@ -1,5 +1,7 @@
 package com.example.SpringBootStarter.controller;
 
+import com.example.SpringBootStarter.api.KakaoApiLoginUtil;
+import com.example.SpringBootStarter.dto.KakaoDto;
 import com.example.SpringBootStarter.dto.UserDto;
 import com.example.SpringBootStarter.dto.UserSignUpDto;
 import com.example.SpringBootStarter.entity.User;
@@ -22,14 +24,14 @@ public class LoginController {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-//    private final KakaoApiLoginUtil kakaoApiLoginUtil;
-//
-//    // 카카오 callback
-//    @GetMapping("/oauth2/code/kakao")
-//    @ResponseBody
-//    public KakaoDto.OAuthToken oauth2KakaoLogin(@RequestParam String code) {
-//        return kakaoApiLoginUtil.oauth2KakaoLogin(code);
-//    }
+    private final KakaoApiLoginUtil kakaoApiLoginUtil;
+
+    // 카카오 callback
+    @GetMapping("/oauth2/kakao/handler")
+    public KakaoDto.OAuthToken oauth2KakaoLogin(@RequestParam String code) {
+        log.info("code : " + code);
+        return kakaoApiLoginUtil.oauth2KakaoLogin(code);
+    }
 
     @PostMapping("/sign-up")
     public boolean signup(@RequestBody UserDto userDto) {

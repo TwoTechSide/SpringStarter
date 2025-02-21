@@ -29,8 +29,6 @@ const Signup = () => {
     const onChangeAge = (e) => { setUserInfo({...userInfo, age: e.target.value}); };
     const onChangeGender = (e) => { setUserInfo({...userInfo, gender: e.target.value}); };
 
-    const serverUrl = process.env.REACT_APP_SERVER_URL;
-
     // 비밀번호 확인
     const onChangeConfirmPassword = (e) => {
         let value = e.target.value;
