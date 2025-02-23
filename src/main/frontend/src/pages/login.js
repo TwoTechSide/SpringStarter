@@ -16,8 +16,8 @@ function Login() {
         <>
             <div className='login-wrapper'>
                 <h2>Log in</h2>
-                <input type='email' name='userEmail' placeholder='email'></input>
-                <input type='password' name='userPassword' placeholder='password'></input>
+                <input type='text' name='userId' placeholder='Id'></input>
+                <input type='password' name='password' placeholder='Password'></input>
                 <input type='submit' value='login'></input>
                 <div className='api-login'>
                     <div className='container'>

@@ -22,8 +22,9 @@ public class UserService {
     public User dtoToEntity(UserDto userDto) {
         return User.builder()
                 .email(userDto.getEmail())
+                .userId(userDto.getUserId())
+                .nickname(userDto.getNickname())
                 .password(userDto.getPassword())
-                .name(userDto.getName())
                 .age(userDto.getAge())
                 .email(userDto.getEmail())
                 .build();
@@ -32,12 +33,12 @@ public class UserService {
     // Entity -> Dto
     public UserDto entityToDto(User user) {
         return UserDto.builder()
-                .id(user.getId())
-                .name(user.getName())
+                .email(user.getEmail())
+                .userId(user.getUserId())
+                .nickname(user.getNickname())
                 .password(user.getPassword())
                 .age(user.getAge())
                 .gender(user.getGender())
-                .email(user.getEmail())
                 .build();
     }
 }

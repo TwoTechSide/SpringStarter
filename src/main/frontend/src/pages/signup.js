@@ -12,7 +12,8 @@ const Signup = () => {
 
     const [userInfo, setUserInfo] = useState({
         email: '',
-        name: '',
+        userId: '',
+        nickname: '',
         password: '',
         age: '',
         gender: '',
@@ -24,7 +25,8 @@ const Signup = () => {
     const [isValidPassword, setIsValidPassword] = useState(false);
 
     const onChangeEmail = (e) => { setUserInfo({...userInfo, email: e.target.value}); };
-    const onChangeName = (e) => { setUserInfo({...userInfo, name: e.target.value}); };
+    const onChangeUserId = (e) => { setUserInfo({...userInfo, userId: e.target.value}); };
+    const onChangeNickname = (e) => { setUserInfo({...userInfo, nickname: e.target.value}); };
     const onChangePassword = (e) => { setUserInfo({...userInfo, password: e.target.value}); };
     const onChangeAge = (e) => { setUserInfo({...userInfo, age: e.target.value}); };
     const onChangeGender = (e) => { setUserInfo({...userInfo, gender: e.target.value}); };
@@ -44,7 +46,8 @@ const Signup = () => {
 
         // 공란 확인
         if (userInfo.email == "") return alert("이메일을 입력해주세요.");
-        if (userInfo.name == "") return alert("이름을 입력해주세요.");
+        if (userInfo.userId == "") return alert("아이디를 입력해주세요.");
+        if (userInfo.nickname == "") return alert("이름을 입력해주세요.");
         if (userInfo.age == "") return alert("나이를 입력해주세요.");
 
         // 회원가입 유효성 검사
@@ -103,8 +106,14 @@ const Signup = () => {
                     <button className='checkConfirm' onClick={checkDuplicateEmail}>중복 확인</button>
                 </div>
                 <div className='inputRow'>
-                    <div className='inputDescription'>이름</div>
-                    <input type="name" className='rightInput' placeholder="name" name='name' onChange={onChangeName}></input>
+                    <div className='halfRow'>
+                        <div className='inputDescription'>아이디</div>
+                        <input type="name" className='rightInput' placeholder="userId" name='userId' onChange={onChangeUserId}></input>
+                    </div>
+                    <div className='halfRow'>
+                        <div className='inputDescription'>닉네임</div>
+                        <input type="name" className='rightInput' placeholder="Nickname" name='Nickname' onChange={onChangeNickname}></input>
+                    </div>
                 </div>
                 <div className='inputRow'>
                     <div className='halfRow'>

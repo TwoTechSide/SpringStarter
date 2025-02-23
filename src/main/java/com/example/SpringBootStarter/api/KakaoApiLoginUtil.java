@@ -2,6 +2,7 @@ package com.example.SpringBootStarter.api;
 
 import com.example.SpringBootStarter.dto.KakaoDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +15,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Slf4j
 @Component
 public class KakaoApiLoginUtil {
@@ -24,7 +28,10 @@ public class KakaoApiLoginUtil {
     @Value("${kakao.redirect_uri}")
     private String redirectUri;
 
-    public KakaoDto.OAuthToken oauth2KakaoLogin(String code) {
+    private Map<String, String> tokens;
+    private Map<String, String> profiles;
+
+    public Map<String, String> getTokens(String code) {
 
         ObjectMapper objectMapper = new ObjectMapper();
         KakaoDto.OAuthToken oAuthToken = null;
@@ -51,10 +58,41 @@ public class KakaoApiLoginUtil {
         try {
             oAuthToken = objectMapper.readValue(response.getBody(), KakaoDto.OAuthToken.class);
             log.info("oAuthToken : " + oAuthToken.getAccess_token());
+
+            tokens = new HashMap<>();
+            tokens.put("access_token", oAuthToken.getAccess_token());
+            tokens.put("refresh_token", oAuthToken.getRefresh_token());
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
 
-        return oAuthToken;
+        return tokens;
+    }
+
+    public Map<String, String> getProfile(String access_token) {
+
+        // 사용자 정보 요청
+        String reqUrl = "https://kapi.kakao.com/v2/user/me";
+        RestTemplate rt = new RestTemplate();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + access_token);
+        headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+
+
+        try {
+            HttpEntity<MultiValueMap<String, String>> reqMsg = new HttpEntity<>(headers);
+            ResponseEntity<String> response = rt.exchange(reqUrl, HttpMethod.POST, reqMsg, String.class);
+
+            JsonNode jsonNode = objectMapper.readTree(response.getBody());
+
+        } catch (JsonProcessingException e) {
+            return null;
+        }
+
+        profiles = new HashMap<>();
+
+        return profiles;
     }
 }

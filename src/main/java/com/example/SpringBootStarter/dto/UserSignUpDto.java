@@ -7,6 +7,6 @@ import lombok.Data;
 @Builder
 public class UserSignUpDto {
 
-    private String email;
+    private String userId;
     private String password;
 }

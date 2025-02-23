@@ -1,7 +1,6 @@
 package com.example.SpringBootStarter.controller;
 
 import com.example.SpringBootStarter.api.KakaoApiLoginUtil;
-import com.example.SpringBootStarter.dto.KakaoDto;
 import com.example.SpringBootStarter.dto.UserDto;
 import com.example.SpringBootStarter.dto.UserSignUpDto;
 import com.example.SpringBootStarter.entity.User;
@@ -12,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -28,21 +28,21 @@ public class LoginController {
 
     // 카카오 callback
     @GetMapping("/oauth2/kakao/handler")
-    public KakaoDto.OAuthToken oauth2KakaoLogin(@RequestParam String code) {
+    public Map<String, String> oauth2KakaoLogin(@RequestParam String code) {
         log.info("code : " + code);
-        return kakaoApiLoginUtil.oauth2KakaoLogin(code);
+        Map<String, String> res = kakaoApiLoginUtil.getTokens(code);
+        Map<String, String> profile = kakaoApiLoginUtil.getProfile(res.get("access_token"));
+
+        return profile;
     }
 
     @PostMapping("/sign-up")
     public boolean signup(@RequestBody UserDto userDto) {
 
-        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
-            return false;
-        };
-
         User user = User.builder()
                 .email(userDto.getEmail())
-                .name(userDto.getName())
+                .userId(userDto.getUserId())
+                .nickname(userDto.getNickname())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .age(userDto.getAge())
                 .gender(userDto.getGender())
@@ -55,7 +55,9 @@ public class LoginController {
 
     @PostMapping("/sign-in")
     public Object signin(@RequestBody UserSignUpDto signUpDto) {
-        Optional<User> user = userRepository.findByEmail(signUpDto.getEmail());
+        String userId = signUpDto.getUserId();
+
+        Optional<User> user = userRepository.findByUserId(signUpDto.getUserId());
 
         if (user.isPresent()) {
             if (passwordEncoder.matches(signUpDto.getPassword(), user.get().getPassword())) {
