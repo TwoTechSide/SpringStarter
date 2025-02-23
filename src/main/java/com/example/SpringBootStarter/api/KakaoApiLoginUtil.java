@@ -1,9 +1,12 @@
 package com.example.SpringBootStarter.api;
 
 import com.example.SpringBootStarter.dto.KakaoDto;
+import com.example.SpringBootStarter.dto.UserDto;
+import com.example.SpringBootStarter.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -29,7 +32,6 @@ public class KakaoApiLoginUtil {
     private String redirectUri;
 
     private Map<String, String> tokens;
-    private Map<String, String> profiles;
 
     public Map<String, String> getTokens(String code) {
 
@@ -69,7 +71,7 @@ public class KakaoApiLoginUtil {
         return tokens;
     }
 
-    public Map<String, String> getProfile(String access_token) {
+    public UserDto getProfile(String access_token) {
 
         // 사용자 정보 요청
         String reqUrl = "https://kapi.kakao.com/v2/user/me";
@@ -85,14 +87,17 @@ public class KakaoApiLoginUtil {
             HttpEntity<MultiValueMap<String, String>> reqMsg = new HttpEntity<>(headers);
             ResponseEntity<String> response = rt.exchange(reqUrl, HttpMethod.POST, reqMsg, String.class);
 
+            // API -> 유저 아이디, 이메일
             JsonNode jsonNode = objectMapper.readTree(response.getBody());
 
+            UserDto userDto = UserDto.builder()
+                            .userId(jsonNode.get("id").asText())
+                            .email(jsonNode.get("kakao_account").get("email").asText())
+                            .build();
+
+            return userDto;
         } catch (JsonProcessingException e) {
             return null;
         }
-
-        profiles = new HashMap<>();
-
-        return profiles;
     }
 }

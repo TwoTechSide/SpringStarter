@@ -28,12 +28,23 @@ public class LoginController {
 
     // 카카오 callback
     @GetMapping("/oauth2/kakao/handler")
-    public Map<String, String> oauth2KakaoLogin(@RequestParam String code) {
+    public UserDto oauth2KakaoLogin(@RequestParam String code) {
+
+        // 1. 카카오 API 토큰 발급
         log.info("code : " + code);
         Map<String, String> res = kakaoApiLoginUtil.getTokens(code);
-        Map<String, String> profile = kakaoApiLoginUtil.getProfile(res.get("access_token"));
 
-        return profile;
+        // 2. 토큰으로 유저 DB 확인
+        UserDto userDto = kakaoApiLoginUtil.getProfile(res.get("access_token"));
+        boolean isExistUser = userRepository.findByUserId(userDto.getUserId()).isPresent();
+
+        // 3. 있을 경우 <메인 화면>으로, 없으면 <Sign-up> 페이지로 이동
+        /* 25.02.23 To-Do */
+        if (isExistUser) {
+            return userDto;
+        } else {
+            return null;
+        }
     }
 
     @PostMapping("/sign-up")
