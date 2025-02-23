@@ -2,11 +2,9 @@ package com.example.SpringBootStarter.api;
 
 import com.example.SpringBootStarter.dto.KakaoDto;
 import com.example.SpringBootStarter.dto.UserDto;
-import com.example.SpringBootStarter.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -23,7 +21,7 @@ import java.util.Map;
 
 @Slf4j
 @Component
-public class KakaoApiLoginUtil {
+public class KakaoApUtil {
 
     @Value("${kakao.client_id}")
     private String clientId;
@@ -71,7 +69,7 @@ public class KakaoApiLoginUtil {
         return tokens;
     }
 
-    public UserDto getProfile(String access_token) {
+    public Map<String, String> getProfile(String access_token) {
 
         // 사용자 정보 요청
         String reqUrl = "https://kapi.kakao.com/v2/user/me";
@@ -82,19 +80,22 @@ public class KakaoApiLoginUtil {
         headers.add("Authorization", "Bearer " + access_token);
         headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
 
-
         try {
             HttpEntity<MultiValueMap<String, String>> reqMsg = new HttpEntity<>(headers);
             ResponseEntity<String> response = rt.exchange(reqUrl, HttpMethod.POST, reqMsg, String.class);
+            Map<String, String> userDataMap = new HashMap<>();
 
             // API -> 아이디, 이메일
             JsonNode jsonNode = objectMapper.readTree(response.getBody());
+            String userId = jsonNode.get("id").asText();
+            String email = jsonNode.get("kakao_account").get("email").asText();
 
             // Return (UserDto <- 아이디, 이메일)
-            return UserDto.builder()
-                    .userId(jsonNode.get("id").asText())
-                    .email(jsonNode.get("kakao_account").get("email").asText())
-                    .build();
+            userDataMap.put("userId", userId);
+            userDataMap.put("email", email);
+
+            return userDataMap;
+
         } catch (JsonProcessingException e) {
             return null;
         }
