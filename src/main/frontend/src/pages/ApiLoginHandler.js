@@ -19,9 +19,6 @@ const ApiLoginHandler = (props) => {
                 }
             }).then((res) => {
                 console.log(res.data);
-                if (res.data == '') {
-                    // navigate("/sign-up");
-                }
             });
         }
         kakaoLogin();
