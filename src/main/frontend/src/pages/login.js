@@ -26,7 +26,7 @@ function Login() {
                         </a>
                     </div>
                 </div>
-                <Link to="/signup">회원 가입</Link>
+                <Link to="/sign-up">회원 가입</Link>
             </div>
         </>
     )

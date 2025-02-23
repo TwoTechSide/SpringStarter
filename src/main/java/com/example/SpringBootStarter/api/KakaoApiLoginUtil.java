@@ -87,15 +87,14 @@ public class KakaoApiLoginUtil {
             HttpEntity<MultiValueMap<String, String>> reqMsg = new HttpEntity<>(headers);
             ResponseEntity<String> response = rt.exchange(reqUrl, HttpMethod.POST, reqMsg, String.class);
 
-            // API -> 유저 아이디, 이메일
+            // API -> 아이디, 이메일
             JsonNode jsonNode = objectMapper.readTree(response.getBody());
 
-            UserDto userDto = UserDto.builder()
-                            .userId(jsonNode.get("id").asText())
-                            .email(jsonNode.get("kakao_account").get("email").asText())
-                            .build();
-
-            return userDto;
+            // Return (UserDto <- 아이디, 이메일)
+            return UserDto.builder()
+                    .userId(jsonNode.get("id").asText())
+                    .email(jsonNode.get("kakao_account").get("email").asText())
+                    .build();
         } catch (JsonProcessingException e) {
             return null;
         }

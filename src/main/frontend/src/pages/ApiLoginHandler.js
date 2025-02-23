@@ -1,9 +1,13 @@
 import axios from "axios";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ApiLoginHandler = (props) => {
 
+    const navigate = useNavigate();
+
     const code = new URL(window.location.href).searchParams.get("code");
+
 
     useEffect(() => {
         const kakaoLogin = async () => {
@@ -15,6 +19,9 @@ const ApiLoginHandler = (props) => {
                 }
             }).then((res) => {
                 console.log(res.data);
+                if (res.data == '') {
+                    // navigate("/sign-up");
+                }
             });
         }
         kakaoLogin();

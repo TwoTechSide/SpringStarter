@@ -10,7 +10,7 @@ const Router = () => {
         <BrowserRouter>
             <Routes>
                 <Route path='/' element={<Login />} />
-                <Route path='/signup' element={<Signup />}/>
+                <Route path='/sign-up' element={<Signup />}/>
                 <Route path='/login/oauth2/kakao' element={<ApiLoginHandler />}/>
             </Routes>
         </BrowserRouter>

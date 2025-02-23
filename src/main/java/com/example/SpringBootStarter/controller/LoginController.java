@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -28,7 +29,9 @@ public class LoginController {
 
     // 카카오 callback
     @GetMapping("/oauth2/kakao/handler")
-    public UserDto oauth2KakaoLogin(@RequestParam String code) {
+    public Map<String, Object> oauth2KakaoLogin(@RequestParam String code) {
+
+        Map<String, Object> data = new HashMap<>();
 
         // 1. 카카오 API 토큰 발급
         log.info("code : " + code);
@@ -38,13 +41,11 @@ public class LoginController {
         UserDto userDto = kakaoApiLoginUtil.getProfile(res.get("access_token"));
         boolean isExistUser = userRepository.findByUserId(userDto.getUserId()).isPresent();
 
-        // 3. 있을 경우 <메인 화면>으로, 없으면 <Sign-up> 페이지로 이동
-        /* 25.02.23 To-Do */
-        if (isExistUser) {
-            return userDto;
-        } else {
-            return null;
-        }
+        // 3. {esExistUser, userDto} 전달
+        data.put("isExistUser", isExistUser);
+        data.put("userData", userDto);
+
+        return data;
     }
 
     @PostMapping("/sign-up")
