@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Login from './pages/login';
 import Signup from './pages/signup';
-import ApiLoginHandler from './pages/ApiLoginHandler';
+import KakaoApiLogin from './pages/KakaoApiLogin';
 
 const Router = () => {
     return (
@@ -11,7 +11,7 @@ const Router = () => {
             <Routes>
                 <Route path='/' element={<Login />} />
                 <Route path='/sign-up' element={<Signup />}/>
-                <Route path='/login/oauth2/kakao' element={<ApiLoginHandler />}/>
+                <Route path='/login/oauth2/kakao' element={<KakaoApiLogin />}/>
             </Routes>
         </BrowserRouter>
     )
