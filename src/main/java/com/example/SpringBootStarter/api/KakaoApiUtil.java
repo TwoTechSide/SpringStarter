@@ -36,7 +36,7 @@ public class KakaoApiUtil {
         KakaoDto.OAuthToken oAuthToken = null;
 
         // 토큰 받기 요청 - developers.kakao.com - REST API 문서 확인
-        String reqUrl = "https://kauth.kakao.com/oauth/authorize";
+        String reqUrl = "https://kauth.kakao.com/oauth/token";
         RestTemplate rt = new RestTemplate();
 
         // HttpHeader
@@ -52,7 +52,7 @@ public class KakaoApiUtil {
 
         // Header + Body
         HttpEntity<MultiValueMap<String, String>> reqMsg = new HttpEntity<>(params, headers);
-        ResponseEntity<String> response = rt.exchange("https://kauth.kakao.com/oauth/token", HttpMethod.POST, reqMsg, String.class);
+        ResponseEntity<String> response = rt.exchange(reqUrl, HttpMethod.POST, reqMsg, String.class);
 
         try {
             oAuthToken = objectMapper.readValue(response.getBody(), KakaoDto.OAuthToken.class);
