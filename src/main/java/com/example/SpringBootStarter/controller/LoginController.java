@@ -1,6 +1,6 @@
 package com.example.SpringBootStarter.controller;
 
-import com.example.SpringBootStarter.api.KakaoApUtil;
+import com.example.SpringBootStarter.api.KakaoApiUtil;
 import com.example.SpringBootStarter.dto.UserDto;
 import com.example.SpringBootStarter.dto.UserSignUpDto;
 import com.example.SpringBootStarter.entity.User;
@@ -24,7 +24,7 @@ public class LoginController {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-    private final KakaoApUtil kakaoApUtil;
+    private final KakaoApiUtil kakaoApiUtil;
 
     // 카카오 callback
     @GetMapping("/oauth2/kakao/handler")
@@ -32,10 +32,10 @@ public class LoginController {
 
         // 1. 카카오 API 토큰 발급
         log.info("code : " + code);
-        Map<String, String> res = kakaoApUtil.getTokens(code);
+        Map<String, String> res = kakaoApiUtil.getTokens(code);
 
         // 2. 토큰으로 유저 DB 확인
-        Map<String, String> userDataMap = kakaoApUtil.getProfile(res.get("access_token"));
+        Map<String, String> userDataMap = kakaoApiUtil.getProfile(res.get("access_token"));
         Optional<User> optionalUser = userRepository.findByUserId(userDataMap.get("userId"));
 
         // 2-5. DB 에 등록되지 않은 경우 새로 저장

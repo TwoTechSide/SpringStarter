@@ -1,7 +1,6 @@
 package com.example.SpringBootStarter.api;
 
 import com.example.SpringBootStarter.dto.KakaoDto;
-import com.example.SpringBootStarter.dto.UserDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +20,7 @@ import java.util.Map;
 
 @Slf4j
 @Component
-public class KakaoApUtil {
+public class KakaoApiUtil {
 
     @Value("${kakao.client_id}")
     private String clientId;
