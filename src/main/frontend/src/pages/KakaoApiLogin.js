@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const ApiLoginHandler = (props) => {
+const KakaoApiLogin = (props) => {
 
     const navigate = useNavigate();
 
@@ -31,4 +31,4 @@ const ApiLoginHandler = (props) => {
     )
 }
 
-export default ApiLoginHandler;
+export default KakaoApiLogin;
