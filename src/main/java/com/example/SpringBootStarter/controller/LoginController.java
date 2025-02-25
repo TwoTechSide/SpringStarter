@@ -1,6 +1,7 @@
 package com.example.SpringBootStarter.controller;
 
 import com.example.SpringBootStarter.api.KakaoApiUtil;
+import com.example.SpringBootStarter.api.NaverApiUtil;
 import com.example.SpringBootStarter.dto.UserDto;
 import com.example.SpringBootStarter.dto.UserSignUpDto;
 import com.example.SpringBootStarter.entity.User;
@@ -25,6 +26,7 @@ public class LoginController {
     private final UserRepository userRepository;
 
     private final KakaoApiUtil kakaoApiUtil;
+    private final NaverApiUtil naverApiUtil;
 
     // 카카오 callback
     @GetMapping("/oauth2/kakao/handler")
@@ -48,6 +50,34 @@ public class LoginController {
                     .build();
 
             user = userService.saveUser(userService.dtoToEntity(userDto));
+        } else {
+            user = optionalUser.get();
+        }
+
+        return user;
+    }
+
+    // 네이버 callback
+    @GetMapping("/oauth2/naver/handler")
+    public User oauth2NaverLogin(@RequestParam String code) {
+
+        log.info("code : " + code);
+
+        Map<String, String> res = naverApiUtil.getTokens(code);
+        Map<String, String> userDataMap = naverApiUtil.getProfile(res.get("access_token"));
+        Optional<User> optionalUser = userRepository.findByUserId(userDataMap.get("userId"));
+
+        User user;
+
+        if (optionalUser.isEmpty()) {
+            user = User.builder()
+                    .userId(userDataMap.get("userId"))
+                    .email(userDataMap.get("email"))
+                    .nickname(userDataMap.get("nickname"))
+                    .gender(userDataMap.get("gender"))
+                    .build();
+
+            user = userService.saveUser(user);
         } else {
             user = optionalUser.get();
         }

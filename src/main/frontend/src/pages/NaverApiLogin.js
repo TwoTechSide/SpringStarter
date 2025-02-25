@@ -4,12 +4,13 @@ import { useEffect } from "react";
 const NaverApiLogin = (props) => {
 
     const code = new URL(window.location.href).searchParams.get("code");
+    const state = new URL(window.location.href).searchParams.get("state");
 
     useEffect(() => {
         const naverLogin = async () => {
             await axios({
                 method: "GET",
-                url: `/login/oauth2/naver/handler?code=${code}`,
+                url: `/login/oauth2/naver/handler?code=${code}&state=${state}`,
                 headers: {
                     "Content-Type": "application/json;charset=utf-8"
                 }
